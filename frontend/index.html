@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>ABapp</title>
+
+    <!-- ✅ Icons for iOS and Android -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="icon" sizes="192x192" href="/icon-192.png" />
+    <link rel="icon" sizes="512x512" href="/icon-512.png" />
+
+    <!-- ✅ Manifest and Theme -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#2c3e50" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <meta name="apple-mobile-web-app-title" content="EduApp" />
+
+    <!-- Dark mode script runs before React mounts -->
+    <script>
+      (function () {
+        try {
+          const theme = localStorage.getItem('theme');
+          const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (theme === 'dark' || (!theme && prefersDark)) {
+            document.documentElement.classList.add('dark');
+            document.documentElement.style.colorScheme = 'dark';
+          } else {
+            document.documentElement.classList.remove('dark');
+            document.documentElement.style.colorScheme = 'light';
+          }
+        } catch (e) {
+          console.warn("Theme detection error", e);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+
+    <!-- ✅ Main App -->
+    <script type="module" src="/src/main.jsx"></script>
+
+    <!-- ✅ Register Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(reg => console.log("✅ Service Worker registered:", reg.scope))
+            .catch(err => console.error("❌ Service Worker registration failed:", err));
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,117 @@
+/* Reset and base styles */
+body, html, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Topbar */
+.topbar {
+  height: 4rem; /* 64px */
+  background-color: #fff;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 1.5rem;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 1.25rem;
+  text-decoration: none;
+  color: #222;
+}
+
+.auth-links {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #dc2626;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+/* Layout */
+.layout {
+  display: flex;
+  flex: 1;
+  margin-top: 4rem; /* Push below topbar */
+}
+
+/* Sidebar */
+.sidebar {
+  width: 16rem;
+  background-color: #f3f4f6;
+  padding: 1rem;
+  overflow-y: auto;
+  position: fixed;
+  top: 4rem;
+  bottom: 0;
+  left: 0;
+  z-index: 40;
+}
+
+/* Admin horizontal nav bar */
+.admin-top-nav {
+  margin-top: 0; /* Below topbar */
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  padding: 0.5rem 1.5rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  border-bottom: 1px solid #e5e7eb;
+  position: sticky; /* Optional: makes it stick on scroll */
+  top: 4rem;
+  z-index: 30;
+}
+
+/* NavLink styling */
+.nav-link {
+  display: block;
+  padding: 0.5rem 0;
+  color: #333;
+  text-decoration: none;
+}
+
+.nav-link.active {
+  font-weight: bold;
+  color: #1d4ed8;
+}
+
+/* Dropdowns (for student subjects/tests) */
+.dropdown {
+  margin-top: 1rem;
+}
+
+.dropdown-title {
+  font-weight: 600;
+  cursor: pointer;
+  padding: 0.5rem 0;
+}
+
+.dropdown-menu {
+  padding-left: 1rem;
+}
+
+/* Optional utility */
+.mt-topbar {
+  margin-top: 4rem;
+}

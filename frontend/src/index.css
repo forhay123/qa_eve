@@ -1,0 +1,207 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Core Design System using HSL */
+@layer base {
+  /* Light Mode */
+  :root {
+    --background: 0 0% 100%; /* White */
+    --foreground: 0 0% 0%;    /* Black */
+
+    --card: 0 0% 100%;        /* White */
+    --card-foreground: 0 0% 0%; /* Black */
+
+    --popover: 0 0% 100%;     /* White */
+    --popover-foreground: 0 0% 0%; /* Black */
+
+    --primary: 350 70% 20%;   /* Wine */
+    --primary-foreground: 0 0% 100%; /* White */
+
+    --secondary: 0 0% 95%;    /* Off-white */
+    --secondary-foreground: 0 0% 0%; /* Black */
+
+    --muted: 0 0% 90%;        /* Light gray */
+    --muted-foreground: 0 0% 20%; /* Dark gray */
+
+    --accent: 350 70% 20%;    /* Wine */
+    --accent-foreground: 0 0% 100%; /* White */
+
+    --destructive: 0 84.2% 60.2%; /* Red */
+    --destructive-foreground: 0 0% 100%; /* White */
+
+    --border: 0 0% 0%;        /* Black */
+    --input: 0 0% 0%;         /* Black */
+    --ring: 350 70% 20%;      /* Wine */
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 100%; /* White */
+    --sidebar-foreground: 0 0% 0%;    /* Black */
+    --sidebar-primary: 350 70% 20%;   /* Wine */
+    --sidebar-primary-foreground: 0 0% 100%; /* White */
+    --sidebar-accent: 0 0% 95%;       /* Off-white */
+    --sidebar-accent-foreground: 0 0% 0%; /* Black */
+    --sidebar-border: 0 0% 0%;        /* Black */
+    --sidebar-ring: 350 70% 20%;      /* Wine */
+  }
+
+  /* Dark Mode */
+  .dark {
+    --background: 0 0% 0%;    /* Black */
+    --foreground: 0 0% 100%;  /* White */
+
+    --card: 0 0% 0%;          /* Black */
+    --card-foreground: 0 0% 100%; /* White */
+
+    --popover: 0 0% 0%;       /* Black */
+    --popover-foreground: 0 0% 100%; /* White */
+
+    --primary: 350 70% 20%;   /* Wine */
+    --primary-foreground: 0 0% 100%; /* White */
+
+    --secondary: 0 0% 5%;     /* Dark gray */
+    --secondary-foreground: 0 0% 100%; /* White */
+
+    --muted: 0 0% 10%;        /* Darker gray */
+    --muted-foreground: 0 0% 80%; /* Light gray */
+
+    --accent: 350 70% 20%;    /* Wine */
+    --accent-foreground: 0 0% 100%; /* White */
+
+    --destructive: 0 84.2% 60.2%; /* Red */
+    --destructive-foreground: 0 0% 100%; /* White */
+
+    --border: 0 0% 100%;      /* White */
+    --input: 0 0% 100%;       /* White */
+    --ring: 350 70% 20%;      /* Wine */
+
+    --sidebar-background: 0 0% 0%;    /* Black */
+    --sidebar-foreground: 0 0% 100%;  /* White */
+    --sidebar-primary: 350 70% 20%;   /* Wine */
+    --sidebar-primary-foreground: 0 0% 100%; /* White */
+    --sidebar-accent: 0 0% 5%;        /* Dark gray */
+    --sidebar-accent-foreground: 0 0% 100%; /* White */
+    --sidebar-border: 0 0% 100%;      /* White */
+    --sidebar-ring: 350 70% 20%;      /* Wine */
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-background text-foreground transition-colors duration-300;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+  }
+
+  html.dark,
+  html.dark body {
+    @apply bg-background text-foreground;
+  }
+
+  .dark .bg-white {
+    @apply bg-background;
+  }
+
+  .dark .text-black {
+    @apply text-foreground;
+  }
+
+  .dark .text-gray-800,
+  .dark .text-gray-700,
+  .dark .text-gray-600,
+  .dark .text-gray-500 {
+    color: hsl(var(--muted-foreground));
+  }
+
+  .dark .border-gray-300,
+  .dark .border-gray-200 {
+    @apply border-border;
+  }
+
+  .dark .bg-gray-50,
+  .dark .bg-gray-100,
+  .dark .bg-gray-200 {
+    @apply bg-muted;
+  }
+
+  html, #root {
+    height: 100%;
+    width: 100%;
+  }
+}
+
+/* Reset and media styles */
+* {
+  box-sizing: border-box;
+}
+
+img,
+video {
+  max-width: 100%;
+  height: auto;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+/* Layout wrapper */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+/* Topbar styles */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4rem;
+  background-color: hsl(var(--primary));
+  color: hsl(var(--primary-foreground));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 1000;
+  border-bottom: 1px solid hsl(var(--border));
+}
+
+/* Main content wrapper */
+.app-main-content {
+  margin-left: 0;
+  padding: 1rem;
+  @apply bg-background text-foreground;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .app-main-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+}

@@ -1,0 +1,218 @@
+/* =======================
+   Container
+======================= */
+.student-list-container {
+  padding: 24px;
+  max-width: 1000px;
+  margin: 2rem auto;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow-x: auto;
+}
+
+/* Dark Mode Container */
+.dark .student-list-container {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+/* =======================
+   Table Styles
+======================= */
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 14px;
+  min-width: 720px;
+}
+
+.student-table th,
+.student-table td {
+  border: 1px solid #e5e7eb;
+  padding: 14px 12px;
+  text-align: left;
+  vertical-align: middle;
+  word-wrap: break-word;
+}
+
+/* Light Mode Table Header */
+.student-table th {
+  background-color: #f3f4f6;
+  color: #111827;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 13px;
+  letter-spacing: 0.5px;
+}
+
+/* Dark Mode Table Header */
+.dark .student-table th {
+  background-color: #1f2937;
+  color: #f9fafb;
+}
+
+/* =======================
+   Input and Select
+======================= */
+.student-table input,
+.student-table select {
+  width: 100%;
+  padding: 10px;
+  font-size: 13px;
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  box-sizing: border-box;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.student-table input:focus,
+.student-table select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+  outline: none;
+}
+
+/* Dark Mode Inputs */
+.dark .student-table input,
+.dark .student-table select {
+  background-color: #1f2937;
+  color: #f9fafb;
+  border: 1px solid #374151;
+}
+
+.dark .student-table input:focus,
+.dark .student-table select:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+}
+
+/* =======================
+   Action Buttons
+======================= */
+.action-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-start;
+  margin-top: 10px;
+}
+
+.edit-btn,
+.delete-btn,
+.save-btn,
+.cancel-btn {
+  padding: 9px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Button Colors - Light Mode */
+.edit-btn {
+  background-color: #3b82f6;
+  color: #ffffff;
+}
+
+.edit-btn:hover {
+  background-color: #2563eb;
+  transform: scale(1.03);
+}
+
+.delete-btn {
+  background-color: #ef4444;
+  color: #ffffff;
+}
+
+.delete-btn:hover {
+  background-color: #dc2626;
+  transform: scale(1.03);
+}
+
+.save-btn {
+  background-color: #10b981;
+  color: #ffffff;
+}
+
+.save-btn:hover {
+  background-color: #059669;
+  transform: scale(1.03);
+}
+
+.cancel-btn {
+  background-color: #6b7280;
+  color: #ffffff;
+}
+
+.cancel-btn:hover {
+  background-color: #4b5563;
+  transform: scale(1.03);
+}
+
+/* Button Colors - Dark Mode */
+.dark .edit-btn {
+  background-color: #2563eb;
+}
+
+.dark .edit-btn:hover {
+  background-color: #1d4ed8;
+}
+
+.dark .delete-btn {
+  background-color: #dc2626;
+}
+
+.dark .delete-btn:hover {
+  background-color: #b91c1c;
+}
+
+.dark .save-btn {
+  background-color: #059669;
+}
+
+.dark .save-btn:hover {
+  background-color: #047857;
+}
+
+.dark .cancel-btn {
+  background-color: #4b5563;
+}
+
+.dark .cancel-btn:hover {
+  background-color: #374151;
+}
+
+/* =======================
+   Responsive Enhancements
+======================= */
+@media (max-width: 768px) {
+  .student-list-container {
+    padding: 16px;
+  }
+
+  .student-table th,
+  .student-table td {
+    padding: 10px;
+    font-size: 13px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .edit-btn,
+  .delete-btn,
+  .save-btn,
+  .cancel-btn {
+    width: 100%;
+    text-align: center;
+  }
+}

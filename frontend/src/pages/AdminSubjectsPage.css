@@ -1,0 +1,104 @@
+.admin-subjects-page {
+  padding: 2rem;
+  font-family: sans-serif;
+}
+
+h2 {
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+}
+
+.subjects-container {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.subject-column {
+  flex: 1;
+  min-width: 320px;
+}
+
+.subject-column h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 2px solid #ccc;
+  padding-bottom: 0.3rem;
+}
+
+.subject-column table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.subject-column th,
+.subject-column td {
+  border: 1px solid #ddd;
+  padding: 0.6rem 0.8rem;
+  text-align: left;
+}
+
+.subject-column th {
+  background-color: #f8f8f8;
+  font-weight: 600;
+}
+
+.subject-column td input {
+  width: 100%;
+  padding: 0.3rem 0.4rem;
+  font-size: 0.9rem;
+}
+
+.search-input {
+  padding: 0.5rem;
+  width: 100%;
+  max-width: 400px;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+/* ========================= */
+/* Stylish Button Classes    */
+/* ========================= */
+
+.btn {
+  padding: 6px 12px;
+  margin: 2px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.btn-edit {
+  background-color: #3498db;
+  color: #fff;
+}
+
+.btn-edit:hover {
+  background-color: #2980b9;
+}
+
+.btn-delete {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-delete:hover {
+  background-color: #c0392b;
+}
+
+.btn-view {
+  background-color: #2ecc71;
+  color: white;
+}
+
+.btn-view:hover {
+  background-color: #27ae60;
+}

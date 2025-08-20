@@ -1,0 +1,52 @@
+/* App.css */
+
+/* Reset and full height setup */
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Layout wrapper */
+.app-layout {
+  display: flex;
+  min-height: 100vh;
+  flex-direction: column;
+}
+
+/* Topbar styles */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4rem; /* 64px */
+  background-color: #660b0b; /* Tailwind's bg-blue-900 */
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  z-index: 1000;
+}
+
+/* Main content wrapper — deprecated */
+.app-main-content {
+  /* Removed padding-top: 4rem to avoid double spacing */
+  /* Layout spacing is now fully handled in AppLayout with Tailwind */
+  margin-left: 0;
+  padding: 1rem;
+  background-color: #f9fafb;
+  box-sizing: border-box;
+  min-height: 100vh;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .app-main-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+}
