@@ -1,0 +1,13 @@
+venv
+venv311
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+*.log
+*.sqlite3
+.git
+.gitignore
+.alembic
+uploaded_notes
+.env

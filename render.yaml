@@ -1,0 +1,60 @@
+services:
+  # 4.1 Backend: FastAPI as a Docker web service
+  - type: web
+    name: qa-eve-api
+    runtime: docker
+    rootDir: backend              # Dockerfile lives in backend/
+    plan: free
+    healthCheckPath: /health
+    envVars:
+      # Render Postgres database connection (auto-filled if you keep the db below)
+      - key: DATABASE_URL
+        fromDatabase:
+          name: qa-eve-db
+          property: connectionString
+
+      # Secrets from your .env (do not commit these values in GitHub!)
+      - key: SECRET_KEY
+        sync: false               # set in Render dashboard after first apply
+      - key: ALGORITHM
+        value: "HS256"
+      - key: PDF_FOLDER
+        value: "data/lesson_pdfs"
+      - key: OLLAMA_MODEL
+        value: "llama3"
+      - key: EMBEDDING_MODEL
+        value: "BAAI/bge-base-en-v1.5"
+      - key: CHROMA_DB_DIR
+        value: "backend/app/chroma_db"
+      - key: OPENAI_API_KEY
+        sync: false               # add manually in Render dashboard
+      - key: OPENAI_MODEL
+        value: "gpt-3.5-turbo"
+      - key: ALLOWED_ORIGINS
+        value: "http://localhost:3000,http://192.168.1.102:3000,http://127.0.0.1:3000,http://172.20.10.2:3000,http://192.168.29.20:3000,http://192.168.131.116:3000,http://192.168.29.116:3000"
+
+      - key: TOGETHER_API_KEY
+        sync: false               # add manually in Render dashboard
+      - key: TOGETHER_MODEL
+        value: "meta-llama/Llama-3-8B-Instruct"
+
+      - key: USE_OPENAI_IF_OLLAMA_FAILS
+        value: "true"
+      - key: USE_TOGETHER_IF_OLLAMA_FAILS
+        value: "false"
+
+  # 4.2 Frontend: Vite React as a static site
+  - type: web
+    name: qa-eve-frontend
+    runtime: static
+    rootDir: frontend
+    buildCommand: npm ci && npm run build
+    staticPublishPath: dist
+    envVars:
+      - key: VITE_API_URL
+        sync: false   # set to backend public URL after first deploy
+
+# 4.3 (Optional) Postgres database on Render
+databases:
+  - name: qa-eve-db
+    plan: free
