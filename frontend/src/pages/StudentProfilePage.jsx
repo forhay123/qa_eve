@@ -19,7 +19,7 @@ import {
   FaBirthdayCake,
   FaEnvelope,
 } from "react-icons/fa";
-import { Calendar } from "../components/ui/Calendar";
+import { Calendar } from "../components/ui/calendar";
 // Import the BASE_URL from your config.js
 import { BASE_URL } from "../services/config";
 
