@@ -1,0 +1,13 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../there"
+		},
+		{
+			"path": "../../../../Documents/qa_eve11"
+		}
+	]
+}
