@@ -14,6 +14,9 @@ services:
           name: qa-eve-db
           property: connectionString
 
+      - key: PYTHON_VERSION
+        value: 3.11.9   # 👈 Force Python version here
+
       - key: SECRET_KEY
         sync: false
       - key: ALGORITHM
@@ -42,18 +45,3 @@ services:
         value: "true"
       - key: USE_TOGETHER_IF_OLLAMA_FAILS
         value: "false"
-
-  # Frontend: React + Vite
-  - type: web
-    name: qa-eve-frontend
-    runtime: static
-    rootDir: frontend
-    buildCommand: npm ci && npm run build
-    staticPublishPath: dist
-    envVars:
-      - key: VITE_API_URL
-        sync: false   # set this to backend public URL after backend deploys
-
-databases:
-  - name: qa-eve-db
-    plan: free
