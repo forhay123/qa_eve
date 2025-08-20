@@ -397,3 +397,7 @@ def test_connection():
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+@app.get("/")
+def root():
+    return {"message": "QA Eve Backend is running 🚀"}
