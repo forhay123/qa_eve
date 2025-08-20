@@ -1,21 +1,21 @@
 services:
-  # 4.1 Backend: FastAPI as a Docker web service
+  # Backend: FastAPI (no Docker unless you really need it)
   - type: web
-    name: qa-eve-api
-    runtime: docker
-    rootDir: logic/backend        # ✅ corrected path
+    name: qa-eve-backend
+    runtime: python
+    rootDir: backend
     plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port 10000
     healthCheckPath: /health
     envVars:
-      # Render Postgres database connection (auto-filled if you keep the db below)
       - key: DATABASE_URL
         fromDatabase:
           name: qa-eve-db
           property: connectionString
 
-      # Secrets from your .env (do not commit these values in GitHub!)
       - key: SECRET_KEY
-        sync: false               # set in Render dashboard after first apply
+        sync: false
       - key: ALGORITHM
         value: "HS256"
       - key: PDF_FOLDER
@@ -27,14 +27,14 @@ services:
       - key: CHROMA_DB_DIR
         value: "backend/app/chroma_db"
       - key: OPENAI_API_KEY
-        sync: false               # add manually in Render dashboard
+        sync: false
       - key: OPENAI_MODEL
         value: "gpt-3.5-turbo"
       - key: ALLOWED_ORIGINS
-        value: "http://localhost:3000,http://192.168.1.102:3000,http://127.0.0.1:3000,http://172.20.10.2:3000,http://192.168.29.20:3000,http://192.168.131.116:3000,http://192.168.29.116:3000"
+        value: "http://localhost:3000,http://127.0.0.1:3000"
 
       - key: TOGETHER_API_KEY
-        sync: false               # add manually in Render dashboard
+        sync: false
       - key: TOGETHER_MODEL
         value: "meta-llama/Llama-3-8B-Instruct"
 
@@ -43,18 +43,17 @@ services:
       - key: USE_TOGETHER_IF_OLLAMA_FAILS
         value: "false"
 
-  # 4.2 Frontend: Vite React as a static site
+  # Frontend: React + Vite
   - type: web
     name: qa-eve-frontend
     runtime: static
-    rootDir: logic/frontend       # ✅ corrected path
+    rootDir: frontend
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
     envVars:
       - key: VITE_API_URL
-        sync: false   # set to backend public URL after first deploy
+        sync: false   # set this to backend public URL after backend deploys
 
-# 4.3 (Optional) Postgres database on Render
 databases:
   - name: qa-eve-db
     plan: free
