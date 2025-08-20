@@ -3,7 +3,7 @@ services:
   - type: web
     name: qa-eve-api
     runtime: docker
-    rootDir: backend              # Dockerfile lives in backend/
+    rootDir: logic/backend        # ✅ corrected path
     plan: free
     healthCheckPath: /health
     envVars:
@@ -47,7 +47,7 @@ services:
   - type: web
     name: qa-eve-frontend
     runtime: static
-    rootDir: frontend
+    rootDir: logic/frontend       # ✅ corrected path
     buildCommand: npm ci && npm run build
     staticPublishPath: dist
     envVars:
