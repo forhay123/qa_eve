@@ -125,9 +125,13 @@ async def serve_frontend():
         return FileResponse(str(index_file))
     return {"message": "Frontend not built yet"}
 
-# Catch-all → let React Router handle client-side routes
+# Catch-all → serve React index.html only if not requesting static files
 @app.get("/{full_path:path}")
-async def catch_all(full_path: str):
+async def catch_all(request: Request, full_path: str):
+    # If it's under /static or looks like a file (has .ext), return 404 instead
+    if full_path.startswith("static/") or "." in full_path.split("/")[-1]:
+        return {"detail": "Not Found"}
+    
     index_file = FRONTEND_DIST / "index.html"
     if index_file.exists():
         return FileResponse(str(index_file))
