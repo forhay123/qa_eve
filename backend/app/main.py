@@ -88,6 +88,45 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# -------------------- Database Setup --------------------
+
+database.Base.metadata.create_all(bind=database.engine)
+
+
+# -------------------- Routers --------------------
+# ⚠️ Place all API routers here, BEFORE the frontend static files.
+app.include_router(auth_router.router)
+app.include_router(subjects.router)
+app.include_router(students.router, prefix="/students", tags=["Students"])
+app.include_router(topics.router)
+app.include_router(progress.router)
+app.include_router(answers.router)
+app.include_router(topic_questions.router)
+app.include_router(timetable.router)
+app.include_router(student_profile.router)
+app.include_router(attendance.router)
+app.include_router(test_exam.router)
+app.include_router(report_generator.router)
+app.include_router(personalization.router)
+app.include_router(teachers.router)
+app.include_router(parents.router)
+app.include_router(quizzes.router, prefix="/student", tags=["Quizzes"])
+app.include_router(achievements.router)
+app.include_router(resources.router)
+app.include_router(classes.router)
+app.include_router(admin.admin_router)
+app.include_router(admin_progress.router)
+app.include_router(users.router)
+app.include_router(chat_router.router)
+app.include_router(student_progress.router)
+app.include_router(assignment_routes.router)
+app.include_router(messaging_router)
+app.include_router(admin_dashboard_router.router)
+app.include_router(admin_activity.router)
+app.include_router(ask_me_anything.router)
+app.include_router(parent_dashboard_router.router)
+
+
 # -------------------- Static/Upload Folders --------------------
 
 # Absolute base directory
@@ -111,9 +150,10 @@ app.mount("/resources-files", StaticFiles(directory=str(UPLOAD_DIR)), name="reso
 app.mount("/statical/profiles", StaticFiles(directory=str(PROFILE_IMAGE_DIR)), name="profile_images")
 app.mount("/statical", StaticFiles(directory="uploaded_files"), name="static")
 
+
 # -------------------- Serve Frontend --------------------
 
-# Mount React's build folder (after `npm run build --prefix frontend`)
+# Mount React's build folder
 FRONTEND_DIST = BASE_DIR / "app" / "static" / "dist"
 app.mount("/static", StaticFiles(directory=str(FRONTEND_DIST)), name="static_frontend")
 
@@ -137,52 +177,13 @@ async def catch_all(full_path: str):
     # Otherwise, always serve index.html so React Router takes over
     return FileResponse(str(FRONTEND_DIST / "index.html"))
 
-# -------------------- Database Setup --------------------
-
-database.Base.metadata.create_all(bind=database.engine)
-
-
-# -------------------- Routers --------------------
-
-app.include_router(subjects.router)
-app.include_router(students.router, prefix="/students", tags=["Students"])
-app.include_router(topics.router)
-app.include_router(progress.router)
-app.include_router(answers.router)
-app.include_router(topic_questions.router)
-app.include_router(timetable.router)
-app.include_router(student_profile.router)
-app.include_router(attendance.router)
-app.include_router(test_exam.router)
-app.include_router(report_generator.router)
-app.include_router(personalization.router)
-app.include_router(teachers.router)
-app.include_router(parents.router)
-app.include_router(auth_router.router)
-app.include_router(quizzes.router, prefix="/student", tags=["Quizzes"])
-app.include_router(achievements.router)
-app.include_router(resources.router)
-app.include_router(classes.router)
-app.include_router(admin.admin_router)
-app.include_router(admin_progress.router)
-app.include_router(users.router)
-app.include_router(chat_router.router)
-app.include_router(student_progress.router)
-app.include_router(assignment_routes.router)
-app.include_router(messaging_router)
-app.include_router(admin_dashboard_router.router)
-app.include_router(admin_activity.router)
-app.include_router(ask_me_anything.router)
-app.include_router(parent_dashboard_router.router)
-
-
+# -------------------- Final Logging --------------------
 
 print("✅ Timetable router imported successfully")
 print("\n✅ Registered Routes:")
 for route in app.routes:
     print(f"{route.path} → {route.name}")
-
-
+    
 # -------------------- Auth Routes --------------------
 
 @app.post("/register/", response_model=schemas.UserOut)
