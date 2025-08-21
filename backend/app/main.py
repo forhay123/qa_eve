@@ -43,7 +43,7 @@ from app.routers import parent_dashboard_router
 
 app = FastAPI()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
 # Optional: custom OpenAPI config for docs (descriptive)
 def custom_openapi():
@@ -183,7 +183,7 @@ print("✅ Timetable router imported successfully")
 print("\n✅ Registered Routes:")
 for route in app.routes:
     print(f"{route.path} → {route.name}")
-    
+
 # -------------------- Auth Routes --------------------
 
 @app.post("/register/", response_model=schemas.UserOut)

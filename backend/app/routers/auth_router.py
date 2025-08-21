@@ -8,7 +8,7 @@ from app.dependencies import get_current_user
 from app.models import User
 
 router = APIRouter(
-    prefix="/auth",
+    prefix="",
     tags=["Auth"]
 )
 
@@ -36,7 +36,7 @@ def login(
     }
 
 # Optional: User info route for simple frontend use
-@router.get("/user-info", response_model=schemas.FlatUserResponse)
+@router.get("/auth/user-info", response_model=schemas.FlatUserResponse)
 def get_user_info(
     current_user: User = Depends(get_current_user),
     db: Session = Depends(database.get_db)
