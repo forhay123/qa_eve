@@ -16,21 +16,21 @@ export default defineConfig({
           {
             src: 'icon-192.png',
             sizes: '192x192',
-            type: 'image/png'
+            type: 'image/png',
           },
           {
             src: 'icon-512.png',
             sizes: '512x512',
-            type: 'image/png'
-          }
+            type: 'image/png',
+          },
         ],
         start_url: '/',
-        scope: '/', 
+        scope: '/',
         display: 'standalone',
         theme_color: '#2c3e50',
-        background_color: '#ffffff'
-      }
-    })
+        background_color: '#ffffff',
+      },
+    }),
   ],
   resolve: {
     alias: {
@@ -40,20 +40,12 @@ export default defineConfig({
       '@services': path.resolve(__dirname, './src/services'),
     },
   },
+  build: {
+    outDir: '../backend/app/static/dist',
+    emptyOutDir: true,
+  },
   server: {
     host: '0.0.0.0',
     port: 3000,
-    proxy: {
-      '/static': {
-        target: 'http://192.168.29.116:8000',
-        changeOrigin: true,
-        secure: false,
-      },
-      '/api': {
-        target: 'http://192.168.29.116:8000', 
-        changeOrigin: true,
-        secure: false,
-      },
-    },
   },
 });

@@ -7,15 +7,20 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
+# Dependencies
+node_modules/
+
+# Ignore ONLY local frontend build
+dist/
+dist-ssr/
+
+# Local files
 *.local
 
-# Editor directories and files
+# Editor configs
 .vscode/*
 !.vscode/extensions.json
-.idea
+.idea/
 .DS_Store
 *.suo
 *.ntvs*

@@ -109,7 +109,7 @@ app.mount("/lesson-pdfs", StaticFiles(directory=str(LESSON_FOLDER)), name="lesso
 app.mount("/uploaded_pdfs", StaticFiles(directory=str(UPLOAD_FOLDER)), name="uploaded_pdfs")
 app.mount("/resources-files", StaticFiles(directory=str(UPLOAD_DIR)), name="resources_files")
 app.mount("/statical/profiles", StaticFiles(directory=str(PROFILE_IMAGE_DIR)), name="profile_images")
-app.mount("/static", StaticFiles(directory="uploaded_files"), name="static")
+app.mount("/statical", StaticFiles(directory="uploaded_files"), name="static")
 
 # -------------------- Serve Frontend --------------------
 
