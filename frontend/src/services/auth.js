@@ -30,7 +30,7 @@ export const loginUser = async (username, password) => {
   localStorage.setItem('token', token);
   localStorage.setItem('username', username);
 
-  // Fetch current user info
+  // ✅ Correct endpoint for user info
   const user = await getCurrentUser();
 
   // Store user attributes
@@ -51,7 +51,8 @@ export const getCurrentUser = async () => {
   const token = getToken();
   if (!token) throw new Error('No auth token found');
 
-  const res = await fetch(`${BASE_URL}/me/`, {
+  // ✅ Use /auth/user-info (matches your FastAPI router)
+  const res = await fetch(`${BASE_URL}/auth/user-info`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
