@@ -15,6 +15,10 @@ import requests
 import json
 import re
 from pathlib import Path
+
+# New import for serving files
+from fastapi.responses import FileResponse
+
 from . import database, crud, schemas, models
 from .schemas import QuestionOut, TopicOut
 from .database import get_db
@@ -35,12 +39,9 @@ from app.routers.messaging_router import router as messaging_router
 from app.routers import parent_dashboard_router
 
 
-
-
 # -------------------- App Initialization --------------------
 
 app = FastAPI()
-
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
@@ -89,7 +90,6 @@ app.add_middleware(
 
 # -------------------- Static/Upload Folders --------------------
 
-
 # Absolute base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -108,8 +108,30 @@ PROFILE_IMAGE_DIR.mkdir(parents=True, exist_ok=True)
 app.mount("/lesson-pdfs", StaticFiles(directory=str(LESSON_FOLDER)), name="lesson_pdfs")
 app.mount("/uploaded_pdfs", StaticFiles(directory=str(UPLOAD_FOLDER)), name="uploaded_pdfs")
 app.mount("/resources-files", StaticFiles(directory=str(UPLOAD_DIR)), name="resources_files")
-app.mount("/static/profiles", StaticFiles(directory=str(PROFILE_IMAGE_DIR)), name="profile_images")
+app.mount("/statical/profiles", StaticFiles(directory=str(PROFILE_IMAGE_DIR)), name="profile_images")
 app.mount("/static", StaticFiles(directory="uploaded_files"), name="static")
+
+# -------------------- Serve Frontend --------------------
+
+# Mount React's build folder
+FRONTEND_DIST = BASE_DIR / "app" / "static" / "dist"
+app.mount("/static", StaticFiles(directory=str(FRONTEND_DIST)), name="static_frontend")
+
+# Root route → serve React index.html
+@app.get("/")
+async def serve_frontend():
+    index_file = FRONTEND_DIST / "index.html"
+    if index_file.exists():
+        return FileResponse(str(index_file))
+    return {"message": "Frontend not built yet"}
+
+# Catch-all → let React Router handle client-side routes
+@app.get("/{full_path:path}")
+async def catch_all(full_path: str):
+    index_file = FRONTEND_DIST / "index.html"
+    if index_file.exists():
+        return FileResponse(str(index_file))
+    return {"message": "Frontend not built yet"}
 
 # -------------------- Database Setup --------------------
 
@@ -151,10 +173,7 @@ app.include_router(parent_dashboard_router.router)
 
 
 
-print("✅ Timetable router imported successfully")  # 👈 add this here
-
-# ... all the app.include_router(...) calls ...
-
+print("✅ Timetable router imported successfully")
 print("\n✅ Registered Routes:")
 for route in app.routes:
     print(f"{route.path} → {route.name}")
@@ -231,14 +250,6 @@ def update_student(student_id: int, updated_data: schemas.UserUpdate = Body(...)
     db.commit()
     db.refresh(student)
     return student
-
-
-
-
-
-
-
-
 
 # -------------------- Question Generation (Manual + Upload) --------------------
 
@@ -397,7 +408,3 @@ def test_connection():
 @app.get("/health")
 def health():
     return {"status": "ok"}
-
-@app.get("/")
-def root():
-    return {"message": "QA Eve Backend is running 🚀"}
