@@ -43,7 +43,7 @@ from app.routers import parent_dashboard_router
 
 app = FastAPI()
 
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/token")
 
 # Optional: custom OpenAPI config for docs (descriptive)
 def custom_openapi():
