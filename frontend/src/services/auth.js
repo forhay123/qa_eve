@@ -11,7 +11,7 @@ export const loginUser = async (username, password) => {
   formData.append('username', username);
   formData.append('password', password);
 
-  const response = await fetch(`${BASE_URL}/token`, {
+  const response = await fetch(`${BASE_URL}/auth/token`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
