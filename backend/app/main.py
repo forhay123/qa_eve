@@ -113,7 +113,7 @@ app.mount("/statical", StaticFiles(directory="uploaded_files"), name="static")
 
 # -------------------- Serve Frontend --------------------
 
-# Mount React's build folder
+# Mount React's build folder (after `npm run build --prefix frontend`)
 FRONTEND_DIST = BASE_DIR / "app" / "static" / "dist"
 app.mount("/static", StaticFiles(directory=str(FRONTEND_DIST)), name="static_frontend")
 
@@ -125,17 +125,17 @@ async def serve_frontend():
         return FileResponse(str(index_file))
     return {"message": "Frontend not built yet"}
 
-# Catch-all → serve React index.html only if not requesting static files
+# Catch-all route for React Router
 @app.get("/{full_path:path}")
-async def catch_all(request: Request, full_path: str):
-    # If it's under /static or looks like a file (has .ext), return 404 instead
-    if full_path.startswith("static/") or "." in full_path.split("/")[-1]:
-        return {"detail": "Not Found"}
-    
-    index_file = FRONTEND_DIST / "index.html"
-    if index_file.exists():
-        return FileResponse(str(index_file))
-    return {"message": "Frontend not built yet"}
+async def catch_all(full_path: str):
+    file_path = FRONTEND_DIST / full_path
+
+    # If the file exists (like JS, CSS, images), serve it
+    if file_path.exists() and file_path.is_file():
+        return FileResponse(str(file_path))
+
+    # Otherwise, always serve index.html so React Router takes over
+    return FileResponse(str(FRONTEND_DIST / "index.html"))
 
 # -------------------- Database Setup --------------------
 
