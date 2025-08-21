@@ -8,7 +8,7 @@ from app.dependencies import get_current_user
 from app.models import User
 
 router = APIRouter(
-    prefix="auth",
+    prefix="/auth",
     tags=["Auth"]
 )
 
