@@ -11,16 +11,16 @@ export const fetchWithAuth = async (endpoint, method = 'GET', body = null) => {
     headers['Content-Type'] = 'application/json';
   }
 
+  // ✅ Don’t force `/api` if endpoint already starts with `/api`
+  const url = endpoint.startsWith('/api')
+    ? `${BASE_URL}${endpoint}`
+    : `${BASE_URL}${endpoint}`;
+
   if (process.env.NODE_ENV === 'development') {
-    console.log("🔐 fetchWithAuth request:", {
-      // ✅ All API calls now go through the /api/ prefix
-      url: `${BASE_URL}/api${endpoint}`,
-      method,
-      body,
-    });
+    console.log("🔐 fetchWithAuth request:", { url, method, body });
   }
 
-  const response = await fetch(`${BASE_URL}/api${endpoint}`, {
+  const response = await fetch(url, {
     method,
     headers,
     body: body instanceof FormData ? body : body ? JSON.stringify(body) : null,
