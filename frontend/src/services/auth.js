@@ -11,7 +11,7 @@ export const loginUser = async (username, password) => {
   formData.append('username', username);
   formData.append('password', password);
 
-  // ✅ Update to use /api/token
+  // ✅ Correct endpoint: /api/token
   const response = await fetch(`${BASE_URL}/api/token`, {
     method: 'POST',
     headers: {
@@ -28,11 +28,14 @@ export const loginUser = async (username, password) => {
   const data = await response.json();
   const token = data.access_token;
 
+  // Store token and username
   localStorage.setItem('token', token);
   localStorage.setItem('username', username);
 
+  // Fetch current user details
   const user = await getCurrentUser();
 
+  // Store user details in localStorage for quick access
   localStorage.setItem('user', JSON.stringify(user));
   localStorage.setItem('fullName', user.full_name || '');
   localStorage.setItem('isAdmin', user.role === 'admin');
@@ -50,7 +53,7 @@ export const getCurrentUser = async () => {
   const token = getToken();
   if (!token) throw new Error('No auth token found');
 
-  // ✅ Update to use /api/auth/user-info
+  // ✅ Correct endpoint: /api/auth/user-info
   const res = await fetch(`${BASE_URL}/api/auth/user-info`, {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -69,12 +72,12 @@ export const getCurrentUser = async () => {
  * Register a new user (admin-only or authenticated)
  */
 export const registerUser = async (userDetails) => {
-  // Uses fetchWithAuth, so no change needed here
-  return await fetchWithAuth('/register/', 'POST', userDetails);
+  // ✅ Correct endpoint: /api/register
+  return await fetchWithAuth('/api/register', 'POST', userDetails);
 };
 
 /**
- * Logout user by clearing localStorage
+ * Logout user by clearing all saved data
  */
 export const logoutUser = () => {
   localStorage.clear();
