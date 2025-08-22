@@ -186,7 +186,7 @@ for route in app.routes:
 
 # -------------------- Auth Routes --------------------
 
-@app.post("/register/", response_model=schemas.UserOut)
+@app.post("/register", response_model=schemas.UserOut)
 def register(
     user: schemas.UserCreate,
     db: Session = Depends(get_db),
