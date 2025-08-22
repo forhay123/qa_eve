@@ -163,7 +163,7 @@ def preview_report_card(student_id: int, term: str, year: int, db: Session):
     }
 
 
-@router.post("/", response_model=schemas.ReportCardOut)
+@router.post("", response_model=schemas.ReportCardOut)
 def upsert_report_card(entry: schemas.ReportCardCreate, db: Session = Depends(get_db)):
     existing = db.query(models.ReportCard).filter_by(
         student_id=entry.student_id,

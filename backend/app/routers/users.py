@@ -15,7 +15,7 @@ router = APIRouter(
 )
 
 # ✅ Admin-only: Get all users
-@router.get("/", response_model=List[UserOut])
+@router.get("", response_model=List[UserOut])
 def get_all_users(
     db: Session = Depends(get_db),
     admin: User = Depends(get_current_admin_user),
