@@ -13,13 +13,14 @@ export const fetchWithAuth = async (endpoint, method = 'GET', body = null) => {
 
   if (process.env.NODE_ENV === 'development') {
     console.log("🔐 fetchWithAuth request:", {
-      url: `${BASE_URL}${endpoint}`,
+      // ✅ All API calls now go through the /api/ prefix
+      url: `${BASE_URL}/api${endpoint}`,
       method,
       body,
     });
   }
 
-  const response = await fetch(`${BASE_URL}${endpoint}`, {
+  const response = await fetch(`${BASE_URL}/api${endpoint}`, {
     method,
     headers,
     body: body instanceof FormData ? body : body ? JSON.stringify(body) : null,

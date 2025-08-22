@@ -11,23 +11,26 @@ import { BASE_URL, getToken } from './config';
 import { fetchWithAuth } from './utils';
 
 export const getTodayTimetable = async () => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/timetable/today');
 };
 
 
 export async function fetchStudentDashboard() {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/students/dashboard');
 }
 
 export const fetchAdminDashboardData = async () => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/admin-activity/dashboard');
 };
 
 
-
 // ---------- PDF Upload & Question Generation ----------
 export const uploadPDF = async (formData) => {
-  const res = await fetch(`${BASE_URL}/upload/`, {
+  // ✅ Update to use /api/upload
+  const res = await fetch(`${BASE_URL}/api/upload/`, {
     method: 'POST',
     body: formData,
   });
@@ -41,7 +44,8 @@ export const uploadPDF = async (formData) => {
 };
 
 export const generateQuestions = async (pdfId, maxPerChunk = 35, maxTotal = 100) => {
-  const url = new URL(`${BASE_URL}/generate-questions/${pdfId}`);
+  // ✅ Update to use /api/generate-questions
+  const url = new URL(`${BASE_URL}/api/generate-questions/${pdfId}`);
   url.searchParams.append('max_per_chunk', maxPerChunk);
   url.searchParams.append('max_total', maxTotal);
 
@@ -59,19 +63,23 @@ export const generateQuestions = async (pdfId, maxPerChunk = 35, maxTotal = 100)
 };
 
 export const getQuestionsByPdfId = async (pdfId) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/questions/by-pdf/${pdfId}`);
 };
 
 export const submitAnswer = async (payload) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/answer/', 'POST', payload);
 };
 
 // ---------- Topics ----------
 export const fetchTopicsForSubject = async (level, subjectName) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/subjects/${level}/${subjectName}/topics`);
 };
 
 export const createTopic = async (level, subject, formData) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/topics/subjects/${level}/${subject}/topics`, 'POST', formData, true);
 };
 
@@ -99,7 +107,8 @@ export const updateTopic = async (id, formValues) => {
     formData.append("file", formValues.file);
   }
 
-  const res = await fetch(`${BASE_URL}/topics/${id}`, {
+  // ✅ Update to use /api/topics
+  const res = await fetch(`${BASE_URL}/api/topics/${id}`, {
     method: "PUT",
     headers: { Authorization: `Bearer ${token}` },
     body: formData,
@@ -118,10 +127,12 @@ export const updateTopic = async (id, formValues) => {
 };
 
 export const deleteTopic = async (topicId) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/topics/${topicId}`, 'DELETE');
 };
 
 export const getTopicById = async (topicId) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/topics/${topicId}`);
 };
 
@@ -129,33 +140,35 @@ export const getTopicById = async (topicId) => {
 
 // ---------- Students ----------
 export const getStudents = async () => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/students/');
 };
 
 export const deleteStudent = async (id) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/students/${id}`, 'DELETE');
 };
 
 export const updateStudent = async (id, data) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/students/${id}`, 'PUT', data);
 };
 
 export const fetchStudentsByClass = async (level, department = '') => {
+  // Uses fetchWithAuth, so no change needed here
   const query = new URLSearchParams({ level, department }).toString();
   const endpoint = `/admin/progress/get-students-by-class?${query}`;
-
-  console.log("📡 Calling fetchStudentsByClass with endpoint:", endpoint); // 👈 Add this line
-
+  console.log("📡 Calling fetchStudentsByClass with endpoint:", endpoint);
   return await fetchWithAuth(endpoint);
 };
 
-
-
 export const fetchAllClasses = async () => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/admin/progress/get-classes');
 };
 
-export const fetchUserById = async (id) => { 
+export const fetchUserById = async (id) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/admin/progress/user/${id}`);
 };
 
@@ -165,7 +178,8 @@ export const uploadTopicPdf = async (topicId, file) => {
   const formData = new FormData();
   formData.append('file', file);
 
-  const res = await fetch(`${BASE_URL}/topics/${topicId}/upload-pdf`, {
+  // ✅ Update to use /api/topics
+  const res = await fetch(`${BASE_URL}/api/topics/${topicId}/upload-pdf`, {
     method: "PUT",
     headers: { Authorization: `Bearer ${token}` },
     body: formData,
@@ -181,6 +195,7 @@ export const uploadTopicPdf = async (topicId, file) => {
 
 // ---------- New function to fetch all topics for a student's subjects ----------
 export const fetchAllTopicsForStudent = async () => {
+    // Uses fetchWithAuth, so no change needed here
     return await fetchWithAuth('/topics/my-subjects');
 };
 
@@ -188,20 +203,21 @@ export const fetchAllTopicsForStudent = async () => {
 export const togglePdfApproval = async (topicId, isApproved) => {
   const formData = new FormData();
   formData.append('is_pdf_approved', isApproved);
-  
+
   const token = getToken();
-  const response = await fetch(`${BASE_URL}/topics/${topicId}/toggle-approval`, {
+  // ✅ Update to use /api/topics
+  const response = await fetch(`${BASE_URL}/api/topics/${topicId}/toggle-approval`, {
     method: 'PATCH',
     headers: {
       ...(token && { Authorization: `Bearer ${token}` }),
     },
     body: formData,
   });
-  
+
   if (!response.ok) {
     throw new Error(`HTTP error! status: ${response.status}`);
   }
-  
+
   return response.json();
 };
 
@@ -211,10 +227,11 @@ export const getUserTimetable = async () => {
   const user = JSON.parse(localStorage.getItem('user'));
   if (!user || !user.level) throw new Error("User level not found in localStorage");
 
-  const url = `${BASE_URL}/timetable/${user.level}`;
+  // ✅ Update to use /api/timetable
+  const url = `${BASE_URL}/api/timetable/${user.level}`;
 
   const res = await fetch(url, {
-    headers: { 
+    headers: {
       Authorization: `Bearer ${localStorage.getItem('token')}`,
       'Accept': 'application/json'
     },
@@ -229,7 +246,8 @@ export const getUserTimetable = async () => {
 };
 
 export const createTimetable = async (data) => {
-  const url = `${BASE_URL}/timetable/`;
+  // ✅ Update to use /api/timetable
+  const url = `${BASE_URL}/api/timetable/`;
 
   const res = await fetch(url, {
     method: "POST",
@@ -250,7 +268,8 @@ export const createTimetable = async (data) => {
 };
 
 export const getAllTimetables = async () => {
-  const res = await fetch(`${BASE_URL}/timetable`, {
+  // ✅ Update to use /api/timetable
+  const res = await fetch(`${BASE_URL}/api/timetable`, {
     headers: { Authorization: `Bearer ${localStorage.getItem('token')}` },
   });
   if (!res.ok) throw new Error("Failed to fetch timetable");
@@ -258,11 +277,13 @@ export const getAllTimetables = async () => {
 };
 
 export const deleteTimetable = async (id) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/timetable/${id}`, 'DELETE');
 };
 
 export const updateTimetable = async (id, data) => {
-  const res = await fetch(`${BASE_URL}/timetable/${id}`, {
+  // ✅ Update to use /api/timetable
+  const res = await fetch(`${BASE_URL}/api/timetable/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
@@ -280,96 +301,112 @@ export const updateTimetable = async (id, data) => {
 };
 
 
-
 export const fetchTeacherTimetable = async () => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/timetable/teacher');
 };
 
 // 🔄 Get the current student's profile
 export const getMyStudentProfile = async () => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/student_profiles/me`);
 };
 
 // 🔍 Get a student profile by user ID (admin use)
 export const getStudentProfileByUserId = async (userId) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/student_profiles/${userId}`);
 };
 
 export const getAllStudentProfiles = async () => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/student_profiles`);
 };
 
 // ➕ Admin: Create a new student profile
 export const createStudentProfile = async (data) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/student_profiles`, 'POST', data);
 };
 
 // 🛠️ Admin: Update a student profile by user ID
 export const updateStudentProfile = async (userId, data) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/student_profiles/${userId}`, 'PUT', data);
 };
 
 export const updateMyStudentProfile = async (data) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/student_profiles/me', 'PUT', data);
 };
 
 export const uploadProfileImage = async (formData) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/student_profiles/me/image', 'PUT', formData);
 };
 
 
-
 export const submitTestAnswers = ({ subject, test_type, answers }) =>
+  // Uses fetchWithAuth, so no change needed here
   fetchWithAuth('/answers/submit-test/', 'POST', { subject, test_type, answers });
 
 
 export const submitExamAnswers = ({ subject, level, test_type, total_score, total_questions, answers }) =>
+  // Uses fetchWithAuth, so no change needed here
   fetchWithAuth('/answers/submit-test/', 'POST', { subject, level, test_type, total_score, total_questions, answers });
 
 
 export const checkTestSubmission = async ({ subject, test_type }) => {
+  // Uses fetchWithAuth, so no change needed here
   return fetchWithAuth(`/answers/check-submission/?subject=${subject}&test_type=${test_type}`);
 };
 
 
 export const fetchTeacherClasses = async () => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/teacher/get-classes');
 };
 
 
 export const fetchStudentsByClassInTeacher = async (level, department) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/teacher/get-students-by-class?level=${level}&department=${department}`);
 };
 
 
 
 export const getReportCard = async (studentId, term, year) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/report-cards/${studentId}/${term}/${year}`);
 };
 
 export const getMyReportCards = async (term, year) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/report-cards/me?term=${term}&year=${year}`);
 };
 
 export const uploadReportCardsBulk = async (data) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/report-cards/bulk`, 'POST', data);
 };
 
 // 🔎 Admin: Search report cards by name and class
 export const searchReportCards = async (studentId, term, year) => {
+  // Uses fetchWithAuth, so no change needed here
   const url = `/report-cards/search/?student_id=${studentId}&term=${term}&year=${year}`;
   return await fetchWithAuth(url);
 };
 
 
-
 // 📝 Admin: Update a report card (e.g., add or edit comment)
 export const updateReportCard = async (id, data) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/report-cards/${id}`, 'PUT', data);
 };
 
 // ✅ Generate report card for a single student
 export const generateStudentReportCard = async (student_id, term, year) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/report-cards/generate-student/`, 'POST', {
     student_id,
     term,
@@ -379,17 +416,19 @@ export const generateStudentReportCard = async (student_id, term, year) => {
 
 // 🔍 Admin: Search and preview full report for a student by name and class
 export const previewReportCardByName = async (level, name, term, year) => {
+  // Uses fetchWithAuth, so no change needed here
   const url = `/report-cards/search/preview?level=${level}&name=${encodeURIComponent(name)}&term=${term}&year=${year}`;
   return await fetchWithAuth(url);
 };
 
 export const getStudentReportPreview = async (term, year) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/report-cards/preview/me?term=${term}&year=${year}`);
 };
 
 // ✅ 1. Fetch report cards assigned to the teacher
 export const fetchTeacherReportCards = async (filters = {}) => {
-  // ✅ Filter out undefined or null query params
+  // Uses fetchWithAuth, so no change needed here
   const cleaned = Object.fromEntries(
     Object.entries(filters).filter(([_, value]) => value !== undefined && value !== null)
   );
@@ -402,18 +441,21 @@ export const fetchTeacherReportCards = async (filters = {}) => {
 
 // ✅ 2. Update comment for a specific report card (by ID)
 export const updateReportCardComment = async (reportCardId, comment) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/teacher/report-cards/${reportCardId}`, 'PATCH', {
     comment,
   });
 };
 
 export const fetchTeacherClassReportCards = async (term, year) => {
+  // Uses fetchWithAuth, so no change needed here
   const url = `/teacher/report-cards/by-class?term=${term}&year=${year}`;
   return await fetchWithAuth(url);
 };
 
 
 export const fetchTeacherReportCardPreviews = async ({ student_id, term, year }) => {
+  // Uses fetchWithAuth, so no change needed here
   const params = new URLSearchParams({
     student_id: String(student_id),
     term,
@@ -424,11 +466,10 @@ export const fetchTeacherReportCardPreviews = async ({ student_id, term, year })
 };
 
 
-
-// ✅ FIX: Make sure student_id is a number before putting in the query
 export const fetchAdminReportCardPreview = async ({ student_id, term, year }) => {
+  // Uses fetchWithAuth, so no change needed here
   const query = new URLSearchParams({
-    student_id: Number(student_id),  // <-- this ensures it's an int
+    student_id: Number(student_id),
     term,
     year,
   }).toString();
@@ -438,11 +479,13 @@ export const fetchAdminReportCardPreview = async ({ student_id, term, year }) =>
 
 // 📚 Admin fetch all class levels (e.g., JSS1, SS2 Art, etc.)
 export const fetchAllClassLevels = async () => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth(`/admin/classes`);
 };
 
 // 👨‍🎓 Admin fetch students by level + department
 export const fetchStudentsByLevelAndDept = async (level, department = '') => {
+  // Uses fetchWithAuth, so no change needed here
   const query = new URLSearchParams({ level, department }).toString();
   return await fetchWithAuth(`/admin/students?${query}`);
 };
@@ -450,20 +493,21 @@ export const fetchStudentsByLevelAndDept = async (level, department = '') => {
 
 
 export const fetchPersonalizedRecommendations = async () => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/personalization/recommendations');
 };
 
 
 // ---------- Teacher API routes ----------
 export const getTeacherDashboard = async () => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/teacher/dashboard');
 };
 
 export const getTeacherSubjects = async () => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/teacher/subjects');
-};
-
-export const getStudentsInClass = async () => {
+};export const getStudentsInClass = async () => {
   return await fetchWithAuth('/teacher/students');
 };
 
@@ -526,7 +570,8 @@ export const uploadResource = async (formData) => {
 
 // ✅ Trigger resource file download
 export const downloadResource = (id) => {
-  window.open(`${BASE_URL}/resources/download/${id}`, "_blank");
+  // ✅ Update to use /api/resources
+  window.open(`${BASE_URL}/api/resources/download/${id}`, "_blank");
 };
 
 
@@ -535,24 +580,22 @@ export const getStudentResources = async () => {
 };
 
 
-
-
-
-
 export const getAllClasses = async (role) => {
   const endpoint = role === 'admin' ? '/admin/classes' : '/classes/';
   return await fetchWithAuth(endpoint);
 };
 
 export const getAllTeachers = async () => {
-  const res = await fetch(`${BASE_URL}/admin/teachers`, {
+  // ✅ Update to use /api/admin
+  const res = await fetch(`${BASE_URL}/api/admin/teachers`, {
     headers: { Authorization: `Bearer ${getToken()}` }
   });
   return await res.json();
 };
 
 export const assignSubjectToTeacher = async (teacherId, subjectId) => {
-  const res = await fetch(`${BASE_URL}/admin/assign-subject`, {
+  // ✅ Update to use /api/admin
+  const res = await fetch(`${BASE_URL}/api/admin/assign-subject`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -564,11 +607,12 @@ export const assignSubjectToTeacher = async (teacherId, subjectId) => {
 };
 
 export const fetchAssignedSubjects = async () => {
-     return await fetchWithAuth('/teacher/subjects');
+  return await fetchWithAuth('/teacher/subjects');
 };
 
 export const fetchTeachersWithSubjects = async () => {
-  const res = await fetch(`${BASE_URL}/admin/teachers-with-subjects`, {
+  // ✅ Update to use /api/admin
+  const res = await fetch(`${BASE_URL}/api/admin/teachers-with-subjects`, {
     headers: { Authorization: `Bearer ${getToken()}` },
   });
   if (!res.ok) {
@@ -613,12 +657,10 @@ export const fetchTeacherTopics = async () => {
 };
 
 
-
-
-
 export const regenerateQuestions = async (topicId, qtype) => {
   const token = getToken();
-  const res = await fetch(`${BASE_URL}/topics/${topicId}/generate-questions?qtype=${qtype}`, {
+  // ✅ Update to use /api/topics
+  const res = await fetch(`${BASE_URL}/api/topics/${topicId}/generate-questions?qtype=${qtype}`, {
     method: 'POST',
     headers: { Authorization: `Bearer ${token}` },
   });
@@ -864,19 +906,19 @@ export const autoGradeLateAssignments = async () => {
 
 
 
-export const adminFetchStudentDashboard = (studentId) => 
+export const adminFetchStudentDashboard = (studentId) =>
   fetchWithAuth(`/admin/student-dashboard/${studentId}`);
 
-export const adminFetchStudentSubjects = (level, department) => 
+export const adminFetchStudentSubjects = (level, department) =>
   fetchWithAuth(`/admin/student-subjects?level=${level}&department=${department}`);
 
-export const adminFetchStudentAssignments = (studentId) => 
+export const adminFetchStudentAssignments = (studentId) =>
   fetchWithAuth(`/admin/student-assignments/${studentId}`);
 
-export const adminFetchStudentSubmissions = (studentId) => 
+export const adminFetchStudentSubmissions = (studentId) =>
   fetchWithAuth(`/admin/student-submissions/${studentId}`);
 
-export const adminFetchStudentProgress = (studentId) => 
+export const adminFetchStudentProgress = (studentId) =>
   fetchWithAuth(`/admin/student-progress/${studentId}`);
 
 export const adminFetchStudentDailyProgress = async (studentId) =>
@@ -900,35 +942,35 @@ export const askAnything = async (subject, question) => {
 
 
 export const linkChildToParent = async (childId) => {
-    return await fetchWithAuth('/parents/link-child', 'POST', { child_id: childId });
+  return await fetchWithAuth('/parents/link-child', 'POST', { child_id: childId });
 };
 
 export const fetchMyChildren = async () => {
-    return await fetchWithAuth('/parents/my-children');
+  return await fetchWithAuth('/parents/my-children');
 };
 
 export const searchStudents = async (query = '', studentClass = '') => {
-    const params = new URLSearchParams();
-    if (query) params.append('query', query);
-    if (studentClass) params.append('student_class', studentClass);
-    return await fetchWithAuth(`/parents/search-students?${params.toString()}`);
+  const params = new URLSearchParams();
+  if (query) params.append('query', query);
+  if (studentClass) params.append('student_class', studentClass);
+  return await fetchWithAuth(`/parents/search-students?${params.toString()}`);
 };
 
 export const fetchChildPerformance = async (childId) => {
-    return await fetchWithAuth(`/parents/child-performance/${childId}`);
+  return await fetchWithAuth(`/parents/child-performance/${childId}`);
 };
 
 // Admin specific calls (if needed in admin dashboard for approvals)
 export const fetchPendingParentApprovals = async () => {
-    return await fetchWithAuth('/parents/admin/pending-approvals');
+  return await fetchWithAuth('/parents/admin/pending-approvals');
 };
 
 export const approveChildAssociation = async (associationId, approvedStatus) => {
-    return await fetchWithAuth(`/parents/admin/approve-child/${associationId}`, 'PUT', { approved: approvedStatus });
+  return await fetchWithAuth(`/parents/admin/approve-child/${associationId}`, 'PUT', { approved: approvedStatus });
 };
 
 export const fetchParentWithChildren = async () => {
-    return await fetchWithAuth('/admin/parent-children');
+  return await fetchWithAuth('/admin/parent-children');
 };
 
 // ✅ Fetch a child's attendance history
@@ -944,15 +986,15 @@ export const fetchChildAttendance = async (childId) => {
 
 
 export const fetchChildReportCard = async (childId, term, year) => {
-    try {
-        const params = new URLSearchParams();
-        params.append('term', term);
-        params.append('year', year);
-        // Removed .data here as fetchWithAuth already returns the parsed JSON
-        const response = await fetchWithAuth(`/parents/child-report-card/${childId}?${params.toString()}`);
-        return response; // Corrected line
-    } catch (error) {
-        console.error(`Error fetching report card for child ${childId}, term ${term}, year ${year}:`, error);
-        throw error;
-    }
+  try {
+    const params = new URLSearchParams();
+    params.append('term', term);
+    params.append('year', year);
+    // Removed .data here as fetchWithAuth already returns the parsed JSON
+    const response = await fetchWithAuth(`/parents/child-report-card/${childId}?${params.toString()}`);
+    return response; // Corrected line
+  } catch (error) {
+    console.error(`Error fetching report card for child ${childId}, term ${term}, year ${year}:`, error);
+    throw error;
+  }
 };

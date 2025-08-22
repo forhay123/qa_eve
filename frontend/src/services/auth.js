@@ -11,7 +11,8 @@ export const loginUser = async (username, password) => {
   formData.append('username', username);
   formData.append('password', password);
 
-  const response = await fetch(`${BASE_URL}/token`, {
+  // ✅ Update to use /api/token
+  const response = await fetch(`${BASE_URL}/api/token`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
@@ -30,10 +31,8 @@ export const loginUser = async (username, password) => {
   localStorage.setItem('token', token);
   localStorage.setItem('username', username);
 
-  // ✅ Correct endpoint for user info
   const user = await getCurrentUser();
 
-  // Store user attributes
   localStorage.setItem('user', JSON.stringify(user));
   localStorage.setItem('fullName', user.full_name || '');
   localStorage.setItem('isAdmin', user.role === 'admin');
@@ -51,8 +50,8 @@ export const getCurrentUser = async () => {
   const token = getToken();
   if (!token) throw new Error('No auth token found');
 
-  // ✅ Use /auth/user-info (matches your FastAPI router)
-  const res = await fetch(`${BASE_URL}/auth/user-info`, {
+  // ✅ Update to use /api/auth/user-info
+  const res = await fetch(`${BASE_URL}/api/auth/user-info`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -70,6 +69,7 @@ export const getCurrentUser = async () => {
  * Register a new user (admin-only or authenticated)
  */
 export const registerUser = async (userDetails) => {
+  // Uses fetchWithAuth, so no change needed here
   return await fetchWithAuth('/register/', 'POST', userDetails);
 };
 
